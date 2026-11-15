@@ -29,6 +29,10 @@ def run_pipeline(db_path: str | Path | None = None,
     total_usd = round(sum(r["total_usd"] for r in clean), 2)
 
     out = Path(out_dir) if out_dir is not None else None
+    if out is not None:
+        # Create the output dir before opening the warehouse DB inside it,
+        # so a fresh checkout (no outputs/ yet) does not fail to open it.
+        out.mkdir(parents=True, exist_ok=True)
     db = str(db_path) if db_path is not None else (
         str(out / "warehouse.db") if out is not None else ":memory:"
     )
@@ -59,7 +63,6 @@ def run_pipeline(db_path: str | Path | None = None,
         warehouse.log_run(summary)
 
     if out is not None:
-        out.mkdir(parents=True, exist_ok=True)
         public = {k: v for k, v in summary.items() if k != "clean_rows"}
         (out / "summary.json").write_text(
             json.dumps(public, indent=2), encoding="utf-8"
