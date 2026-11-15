@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "n8n-etl-data-pipeline"
+version = "1.0.0"
+description = "n8n ETL data pipeline: extract orders from a paginated API, clean and validate them, load into a SQLite warehouse, quarantine bad rows, raise data-quality alerts — and export the same pipeline as an importable n8n workflow."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{ name = "Murtaza Mahboob" }]
+keywords = [
+    "etl",
+    "n8n",
+    "data-pipeline",
+    "data-quality",
+    "sqlite",
+    "data-warehouse",
+    "python",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0"]
+
+[project.scripts]
+etlpipeline = "etlpipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
